@@ -4,6 +4,10 @@
    *** now using Wemos D1 Mini Lite in newer versions
    Supports UPS3 circuit card in every location
 
+   24 Feb 2021
+   Added to github as a proper project UPSx-control
+   There is also a UPSx-control.ino which was created by copying files.
+
    22 Feb 2021 - v 1.5f same version
    re-enabled temperature sensor
 
