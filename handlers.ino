@@ -142,8 +142,8 @@ void handleLEDTest() {
     sendATTiny(chgOff);
   }  
   
-  server.sendHeader("Location", "/help");     // Add a header to respond with a new location for the browser to go to the home page again
-  server.send(303);                       // Send it back to the browser with an HTTP status 303 (See Other) to redirect
+  server.sendHeader("Location", "/help");   // Add a header to respond with a new location for the browser to go to the home page again
+  server.send(303);                         // Send it back to the browser with an HTTP status 303 (See Other) to redirect
 }
 
 //*************************************************
