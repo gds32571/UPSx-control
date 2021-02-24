@@ -6,7 +6,8 @@
 
    24 Feb 2021
    Added to github as a proper project UPSx-control
-   There is also a UPSx-control.ino which was created by copying files.
+   There is also a UPSx-control.ino which was created by copying files. Don't
+   use this one, except for archive purposes.
 
    22 Feb 2021 - v 1.5f same version
    re-enabled temperature sensor
