@@ -1,6 +1,6 @@
 # UPSx-control
 
-   UPSx-control.ino
-   *** now using Wemos D1 Mini Lite in newer versions
-   Supports UPS3 circuit card in every location
-   
+Operating code for UPS3 controller
+
+For additional information and pictures on this project,
+refer to https://gswann.blogspot.com/2019/01/ups-project.html   
