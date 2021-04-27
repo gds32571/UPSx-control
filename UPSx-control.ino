@@ -4,6 +4,9 @@
    *** now using Wemos D1 Mini Lite in newer versions
    Supports UPS3 circuit card in every location
 
+   13 Mar 2021
+   changing name scheme to UPSx vice OTAx
+
    24 Feb 2021
    Added to github as a proper project UPSx-control
    There is also a UPSx-control.ino which was created by copying files. Don't
@@ -152,7 +155,7 @@
 // last loaded 23 Apr 2019 v 1.5c - ATTiny was reprogrammed
 // added DS18B20 temperature sensor
 // last loaded 8 Jun 2019 v 1.5d 
-// #define OTA5
+#define UPS5
 
 // last loaded 30 Dec 2018 v 1.4e
 // last loaded 27 Feb 2019 v 1.4f
@@ -166,14 +169,15 @@
 // with DS18B20 temperature sensor
 // loaded 8 Jun 2019 v 1.5d
 // used existing ATTiny that was labelled v2 
-// #define OTA7
+// loaded 13 Mar 2021
+// #define UPS6
 
 // for testing with rp2 (was ha32571)
 // and DC load tester
 // loaded 21 Feb 2021 v 1.5f
 // loaded 22 Feb 2021 v 1.5f with sensorEnabled = true
-#define OTA8
-
+// loaded 13 Mar 2021
+// #define UPS2
 
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
@@ -222,8 +226,8 @@ const char* txtBoard = "ESP8266_WeMos_D1_mini_Lite";
 const float factor = 3.815;
 #endif
 
-#ifdef OTA5
-const char* WiFi_hostname = "UPS-control-OTA5";
+#ifdef UPS5
+const char* WiFi_hostname = "UPS-control-UPS5";
 const char* supportedHost = "RPi5";
 const char* txtBoard = "ESP8266_WeMos_D1_mini_Lite";
 const float factor = 3.8946;
@@ -236,18 +240,20 @@ const char* txtBoard = "ESP8266_WeMos_D1_mini_Lite";
 const float factor = 3.8946;
 #endif
 
-#ifdef OTA7
-const char* WiFi_hostname = "UPS-control-OTA7";
+#ifdef UPS6
+const char* WiFi_hostname = "UPS-control-UPS6";
 const char* supportedHost = "rp6";
 const char* txtBoard = "ESP8266_WeMos_D1_mini_Lite";
 const float factor = 3.7514;
 #endif
 
-#ifdef OTA8
-const char* WiFi_hostname = "UPS-control-OTA8";
+#ifdef UPS2
+const char* WiFi_hostname = "UPS-control-UPS2";
 const char* supportedHost = "rp2";
 const char* txtBoard = "ESP8266_WeMos_D1_mini_Lite";
-const float factor = 3.7550;
+// swapped 8266 board with the one on ota6
+// const float factor = 3.7550;  
+const float factor = 3.833;
 #endif
 
 

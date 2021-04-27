@@ -36,11 +36,12 @@ void handleRoot() {
 
   message += " for " + String(sinceCharge) + " seconds\n";
 
-//  message += "temp = " + ;
+//   message += " <a href=../help>help</a>\n " ;
 
   // end message creation
 
   server.send(200, "text/plain", message);
+//  server.send(200, "text/html", message);
 }
 
 void handleSensor() {
