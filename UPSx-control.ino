@@ -4,6 +4,10 @@
    *** now using Wemos D1 Mini Lite in newer versions
    Supports UPS3 circuit card in every location
 
+   13 June 2021
+   added test for wifi status and reconnection attempt
+   added counter for Wifi connection attempts
+
    13 Mar 2021
    changing name scheme to UPSx vice OTAx
 
@@ -22,7 +26,7 @@
    
    19 July 2020 - v 1.5e
    only change is to the  ESP8266WiFi library, now 2.7.2
-   This supposrts the Sonoff switches on the "new" network.
+   This supports the Sonoff switches on the "new" network.
    I had too many devices on the WiFi for the NETGEAR26 to support.  So I moved many to the
    old NETGEAR69 router, including Sonoff switches, the UPS controllers, and the garage ESP Easy devices.
 
@@ -155,7 +159,9 @@
 // last loaded 23 Apr 2019 v 1.5c - ATTiny was reprogrammed
 // added DS18B20 temperature sensor
 // last loaded 8 Jun 2019 v 1.5d 
-#define UPS5
+// last loaded 9 Jun 2021 v 1.5f
+// last loaded 13 Jun 2021 v 1.5g
+// #define UPS5
 
 // last loaded 30 Dec 2018 v 1.4e
 // last loaded 27 Feb 2019 v 1.4f
@@ -170,13 +176,25 @@
 // loaded 8 Jun 2019 v 1.5d
 // used existing ATTiny that was labelled v2 
 // loaded 13 Mar 2021
+// last loaded 9 Jun 2021 v 1.5f
 // #define UPS6
+
+// old UPS was on zero4, now on rp7
+// old kitchen Raspberry Pi
+// last loaded 13 Jun 2021 v 1.5g
+// #define UPS7
+
+// last loaded 2 Jul 2021 v 1.5g
+#define UPS8
+
 
 // for testing with rp2 (was ha32571)
 // and DC load tester
 // loaded 21 Feb 2021 v 1.5f
 // loaded 22 Feb 2021 v 1.5f with sensorEnabled = true
 // loaded 13 Mar 2021
+// last loaded 9 Jun 2021 v 1.5f
+// last loaded 13 Jun 2021 v 1.5g
 // #define UPS2
 
 #include <Arduino.h>
@@ -209,15 +227,9 @@ ESP8266WebServer server(80);
 #define INTERVAL3  10000    // power off 10 seconds
 #define INTERVAL4  75000    // wait 75 seconds for reboot to complete
 
-boolean sensorEnabled = true;  //  false;
-
-// prototype on bread board
-// const char* WiFi_hostname = "UPS-control-OTA2";
-// ota3 (192.168.1.138) supports zero3
-// ota5 supports rp5
-
+boolean sensorEnabled = true;  // was false;
 const char* progname = "UPSx-control";
-const char* myVersion = "v1.5f";
+const char* myVersion = "v1.5g";
 
 #ifdef OTA3
 const char* WiFi_hostname = "UPS-control-OTA3";
@@ -230,7 +242,8 @@ const float factor = 3.815;
 const char* WiFi_hostname = "UPS-control-UPS5";
 const char* supportedHost = "RPi5";
 const char* txtBoard = "ESP8266_WeMos_D1_mini_Lite";
-const float factor = 3.8946;
+// const float factor = 3.8946;
+const float factor = 3.807;
 #endif
 
 #ifdef OTA6
@@ -244,6 +257,14 @@ const float factor = 3.8946;
 const char* WiFi_hostname = "UPS-control-UPS6";
 const char* supportedHost = "rp6";
 const char* txtBoard = "ESP8266_WeMos_D1_mini_Lite";
+// const float factor = 3.7514;
+const float factor = 3.7381;
+#endif
+
+#ifdef UPS7
+const char* WiFi_hostname = "UPS-control-UPS7";
+const char* supportedHost = "rp7";
+const char* txtBoard = "ESP8266_WeMos_D1_mini_Lite";
 const float factor = 3.7514;
 #endif
 
@@ -256,6 +277,12 @@ const char* txtBoard = "ESP8266_WeMos_D1_mini_Lite";
 const float factor = 3.833;
 #endif
 
+#ifdef UPS8
+const char* WiFi_hostname = "UPS-control-UPS8";
+const char* supportedHost = "rp8";
+const char* txtBoard = "ESP8266_WeMos_D1_mini_Lite";
+const float factor = 3.707;
+#endif
 
 //const int led = LED_BUILTIN; // blue LED on the ESP board
 
@@ -336,6 +363,7 @@ int batLowctr = 0;
 
 unsigned long sinceCharge = 0;
 unsigned long mySeconds = 1;    // fixes discrepancy with initial sinceCharge
+unsigned long myConnects = 0;
 
 float tempF;
 float tempF2;
@@ -606,6 +634,16 @@ void loop() {
     // runtime in seconds
     mySeconds += 1;
 
+  if (WiFi.status() != WL_CONNECTED) {
+      WiFi.begin(SSID, SSIDPWD);
+      myConnects += 1;
+  }
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+
   }  // every second
 
   /////
@@ -703,7 +741,7 @@ void setupWifi(){
 
   WiFi.config(staticIP, dns, gateway, subnet);
   WiFi.begin(SSID, SSIDPWD);
-
+  myConnects += 1;
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
@@ -760,5 +798,4 @@ void setupOTA() {
 
   // setup the OTA server
   ArduinoOTA.begin();
-
 }

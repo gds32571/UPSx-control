@@ -13,7 +13,8 @@ void handleRoot() {
                    + "Running " + String(progname) + " " + String(myVersion) 
                    + " on a " + txtBoard +  "\n"
                    + "Reboots: "
-                   + String(reboots) + strReboot + "\n"
+                   + String(reboots) + strReboot + "   "
+                   + "WiFi connections: " + String(myConnects) + " \n"
                    + "Running for " + String(mySeconds) + " seconds"
                    + "  DM time to go: "
                    + String(myVal) + "\n" // + "  Flag = " + strAIO + " dmTimer " + dmTimer +"\n"
